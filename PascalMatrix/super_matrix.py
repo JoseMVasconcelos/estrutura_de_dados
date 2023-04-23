@@ -4,6 +4,12 @@ class SuperMatrix():
             self.__num_lin = num_lin
         if isinstance(num_col, int) and num_col > 0:
             self.__num_col = num_col
-        self.__super_matrix = [[0 for x in range(num_col)] for y in range(num_lin)]
+        self.__super_matrix = [None]*self.__num_col*self.__num_lin
 
+    def atribui(self, lin, col, valor):
+        pos = pega_pos_real(lin, col)
+        self.__super_matrix[pos] = valor
 
+    def pega_pos_real(self, lin, col):
+        pos = (lin*self.__num_lin) + col
+        return pos
