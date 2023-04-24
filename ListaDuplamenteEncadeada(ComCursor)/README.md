@@ -13,7 +13,9 @@ Esse documento é referente ao trabalho 1 de estrutura de dados, no qual foi sol
 
 ### Comentários Iniciais
 
+O trabalho foi realizado apenas por mim, e a parte mais dificil foi definitivamente a lógica por trás da lista. Depois que consegui ter uma boa imagem mental de como as coisas se encaixavam, o trabalho fluiu razoavelmente bem. 
 
+Acabei descobrindo que o garbage collector do Python age de maneira inusitada, um objeto não é apagado da memória caso exista uma auto-referencia, então para não causar nenhum memory leak tive que ter certeza de antes de apagar um nó, remover toda referencia a outros nós que ele fazia.
 
 ## Atributos
 
@@ -82,3 +84,6 @@ Todos os métodos verificam para ver se um nó está só na lista, caso verdadei
 - **__goto_last**: Coloca o cursor no último da lista.
 - **__forwards_n_pos**: Avança n nós da lista..
 - **__backwards_n_pos**: Retrocede n nós da lista.
+
+
+###### José Victor Machado de Vasconcelos - 22100906 - INE5609 
