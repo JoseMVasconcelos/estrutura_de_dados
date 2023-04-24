@@ -17,6 +17,12 @@ O trabalho foi realizado apenas por mim, e a parte mais dificil foi definitivame
 
 Acabei descobrindo que o garbage collector do Python age de maneira inusitada, um objeto não é apagado da memória caso exista uma auto-referencia, então para não causar nenhum memory leak tive que ter certeza de antes de apagar um nó, remover toda referencia a outros nós que ele fazia.
 
+No arquivo ***main.py*** tem uma série de testes para demonstrar a lista funcionando. Em comentário está a posição do cursor e a lista completa esperada, logo abaixo, duas funções que **print** que verificam a posição do cursor real e a lista completa real. Quando a lista é printada, é mostrada junto o valor anterior e o próximo valor, para verificar se o encadeamento está correto.
+
+O modelo da lista é:
+
+NÓ ANTERIOR / NÓ ATUAL / PRÓXIMO NÓ
+
 ## Atributos
 
 ### Atributos Node
