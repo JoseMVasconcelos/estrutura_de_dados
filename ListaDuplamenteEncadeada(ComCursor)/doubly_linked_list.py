@@ -1,5 +1,6 @@
 from node import Node
 
+
 class DoublyLinkedList():
     def __init__(self, max):
         try:
@@ -13,13 +14,12 @@ class DoublyLinkedList():
             print(err)
             exit(1)
 
-
-    #Ambas "is_max" e "is_empty" retornam valores boleanos baseados
-    def is_max(self):
+    # Ambas "is_max" e "is_empty" retornam valores boleanos
+    def is_full(self):
         return True if self.__num_elements == self.__max else False
-    
+
     def is_empty(self):
-            return True if self.__num_elements == 0 else False
+        return True if self.__num_elements == 0 else False
 
     def access_cursor(self):
         try:
@@ -31,14 +31,14 @@ class DoublyLinkedList():
             print(err)
             exit(1)
 
-    #TODAS AS FUNÇÕES DE INSERÇÃO VERIFICAM SE A LISTA ESTÁ VAZIA PRA INSERIR O PRIMEIRO NÓ
-    #TODAS AS FUNCÕES DE INSERÇÃO DEIXAM O CURSOR EM CIMA DO NOVO NÓ
+    # TODAS AS FUNÇÕES DE INSERÇÃO VERIFICAM SE A LISTA ESTÁ VAZIA PRA INSERIR O PRIMEIRO NÓ
+    # TODAS AS FUNCÕES DE INSERÇÃO DEIXAM O CURSOR EM CIMA DO NOVO NÓ
     def insert_in_prev_cursor(self, value):
-        if self.__num_elements == 0:
+        if self.is_empty():
             self.first_insert(value)
         else:
             try:
-                if not self.__num_elements == self.__max:
+                if not self.is_full():
                     node = Node(value)
                     next = self.access_cursor()
                     self.__backwards_n_pos(1)
@@ -47,19 +47,21 @@ class DoublyLinkedList():
                     next.prev_node = node
                     node.next_node = next
                     node.prev_node = prev
+                    if next == self.__first:
+                        self.__first = node
                     self.__forwards_n_pos(1)
                     self.__num_elements += 1
                 else:
                     raise IndexError("List is full!")
             except IndexError as err:
                 print(err)
-    
+
     def insert_in_next_cursor(self, value):
-        if self.__num_elements == 0:
+        if self.is_empty():
             self.first_insert(value)
         else:
             try:
-                if not self.__num_elements == self.__max:
+                if not self.is_full():
                     node = Node(value)
                     prev = self.access_cursor()
                     self.__forwards_n_pos(1)
@@ -75,13 +77,13 @@ class DoublyLinkedList():
             except IndexError as err:
                 print(err)
 
-    #Insere um novo nó na ultima posição, deixa o cursor em cima do nó recém criado
+    # Insere um novo nó na ultima posição, deixa o cursor em cima do nó recém criado
     def insert_as_last(self, value):
         if self.__num_elements == 0:
             self.first_insert(value)
         else:
             try:
-                if not self.__num_elements == self.__max:
+                if not self.is_full():
                     node = Node(value)
                     self.__goto_last()
                     prev = self.access_cursor()
@@ -98,13 +100,13 @@ class DoublyLinkedList():
             except IndexError as err:
                 print(err)
 
-    #Insere um novo nó na primeira posição, deixa o cursor em cima do nó recém criado
+    # Insere um novo nó na primeira posição, deixa o cursor em cima do nó recém criado
     def insert_as_first(self, value):
-        if self.__num_elements == 0:
+        if self.is_empty():
             self.first_insert(value)
         else:
             try:
-                if not self.__num_elements == self.__max:
+                if not self.is_full():
                     node = Node(value)
                     self.__goto_last()
                     prev = self.access_cursor()
@@ -122,13 +124,13 @@ class DoublyLinkedList():
             except IndexError as err:
                 print(err)
 
-    #A seleção de posição se comporta igual ao indice do python, começando no zero
+    # A seleção de posição se comporta igual ao indice do python, começando no zero
     def insert_in_pos(self, n, value):
-        if self.__num_elements == 0:
+        if self.is_empty():
             self.first_insert(value)
         else:
             try:
-                if not self.__num_elements == self.__max:
+                if not self.is_full():
                     if n+1 > self.__max:
                         raise IndexError("Number out of bounds!")
                     if n == 0:
@@ -154,89 +156,58 @@ class DoublyLinkedList():
             except IndexError as err:
                 print(err)
 
-    #INFELIZMENTE O GARBAGE COLLECTOR DO PYTHON NÃO COLETA OBJETOS QUE POSSUEM REFERENCIA A SI PRÓPRIO
-    #É necessário setar o cursor manualmente por causa do garbage collector, bem provável que tenha uma maneira melhor de fazer isso
+    # INFELIZMENTE O GARBAGE COLLECTOR DO PYTHON NÃO COLETA OBJETOS QUE POSSUEM REFERENCIA A SI PRÓPRIO
+    # É necessário setar o cursor manualmente por causa do garbage collector, bem provável que tenha uma maneira melhor de fazer isso
     def remove_in_cursor(self):
         try:
-            if self.__num_elements == 0:
+            if self.is_empty():
                 raise IndexError("List is empty!")
             if self.__num_elements == 1:
                 self.last_deletion()
-            node = self.access_cursor().next_node
-            prev = self.access_cursor().prev_node
-            self.access_cursor().prev_node = None
-            self.access_cursor().next_node = None
-            node.prev_node = prev
-            prev.next_node = node
-            self.__cursor = node
-            self.__num_elements -= 1
+            self.delete_node()
         except IndexError as err:
             print(err)
 
     def remove_first(self):
         try:
-            if self.__num_elements == 0:
+            if self.is_empty():
                 raise IndexError("List is empty!")
             if self.__num_elements == 1:
                 self.last_deletion()
             self.__goto_first()
-            node = self.access_cursor().next_node
-            prev = self.access_cursor().prev_node
-            self.access_cursor().prev_node = None
-            self.access_cursor().next_node = None
-            self.__first = node
-            node.prev_node = prev
-            prev.next_node = node
-            self.__goto_first()
-            self.__num_elements -= 1
+            self.delete_node()
         except IndexError as err:
             print(err)
 
     def remove_last(self):
         try:
-            if self.__num_elements == 0:
+            if self.is_empty():
                 raise IndexError("List is empty!")
             if self.__num_elements == 1:
                 self.last_deletion()
             self.__goto_last()
-            node = self.access_cursor().next_node
-            prev = self.access_cursor().prev_node
-            self.access_cursor().prev_node = None
-            self.access_cursor().next_node = None
-            node.prev_node = prev
-            prev.next_node = node
+            self.delete_node()
             self.__goto_last()
-            self.__num_elements -= 1
         except IndexError as err:
             print(err)
 
     def remove_node(self, value):
         try:
-            if self.__num_elements == 0:
+            if self.is_empty():
                 raise IndexError("List is empty!")
             if self.__num_elements == 1:
                 self.last_deletion()
             self.__goto_first()
-            while not self.__cursor.value == value:
-                self.__forwards_n_pos(1)
-                if self.__cursor == self.__first:
-                    raise IndexError("Node not found!")
-            node = self.access_cursor().next_node
-            prev = self.access_cursor().prev_node
-            self.access_cursor().prev_node = None
-            self.access_cursor().next_node = None
-            node.prev_node = prev
-            prev.next_node = node
-            if self.__cursor == self.__first:
-                self.__first = node
-            self.__cursor = node
-            self.__num_elements -= 1
+            if self.search(value):
+                self.delete_node()
+            else:
+                raise IndexError("Node not found!")
         except IndexError as err:
             print(err)
 
     def remove_pos(self, n):
         try:
-            if self.__num_elements == 0:
+            if self.is_empty():
                 raise IndexError("List is empty!")
             if self.__num_elements == 1:
                 self.last_deletion()
@@ -251,13 +222,26 @@ class DoublyLinkedList():
                     raise IndexError("Out of bounds!")
         except IndexError as err:
             print(err)
-    
-    def node_deleter(self):
-        pass
 
+    #Após apagar o nó o cursor é setado no prox node a não ser que o nó deletado seja o último, caso seja, o cursor fica no novo ultimo.
+    def delete_node(self):
+        node = self.access_cursor().next_node
+        prev = self.access_cursor().prev_node
+        self.access_cursor().prev_node = None
+        self.access_cursor().next_node = None
+        node.prev_node = prev
+        prev.next_node = node
+        if self.__cursor == self.__first:
+            self.__first = node
+            self.__cursor = self.__first
+        elif node == self.__first:
+            self.__cursor = prev
+        else:
+            self.__cursor = node
+        self.__num_elements -= 1
 
-    #Função que cuida do primeiro nó a ser criado, o mesmo é posto como primeiro e tem o cursor o selecionando
-    #O primeiro nó é posto em um laço consigo mesmo
+    # Função que cuida do primeiro nó a ser criado, o mesmo é posto como primeiro e tem o cursor o selecionando
+    # O primeiro nó é posto em um laço consigo mesmo
     def first_insert(self, value):
         node = Node(value)
         node.prev_node = node
@@ -266,7 +250,7 @@ class DoublyLinkedList():
         self.__cursor = node
         self.__num_elements += 1
 
-    #Função que cuida do último nó a ser deletado, por motivos do garbage collector do python agir estranho, tive que por tudo como None
+    # Função que cuida do último nó a ser deletado, por motivos do garbage collector do python agir estranho, tive que por tudo como None
     def last_deletion(self):
         self.access_cursor().next_node = None
         self.access_cursor().prev_node = None
@@ -274,6 +258,7 @@ class DoublyLinkedList():
         self.__cursor = None
         self.__num_elements = 0
 
+    #Caso não ache o valor na lista, o cursor fica na primeira posição
     def search(self, value):
         self.__goto_first()
         while not self.__cursor.value == value:
@@ -281,31 +266,28 @@ class DoublyLinkedList():
             if self.__cursor == self.__first:
                 return False
         return True
-        
 
-    #FUNÇÕES PRIVADAS QUE MANIPULAM O CURSOR
+    # FUNÇÕES PRIVADAS QUE MANIPULAM O CURSOR
 
-    #Coloca o cursor no primeiro nó da lista, se first == None, o cursor também ficará vazio
+    # Coloca o cursor no primeiro nó da lista, se first == None, o cursor também ficará vazio
     def __goto_first(self):
         self.__cursor = self.__first
 
-    #Coloca o cursor no último nó da lista, indo até o primeiro e retornando uma casa, visto que a lista é um laço
+    # Coloca o cursor no último nó da lista, indo até o primeiro e retornando uma casa, visto que a lista é um laço
     def __goto_last(self):
         self.__cursor = self.__first.prev_node
 
-    #Anda o cursor n casas para frente
+    # Anda o cursor n casas para frente
     def __forwards_n_pos(self, n):
         for num in range(n):
             self.__cursor = self.__cursor.next_node
 
-    #Anda o cursor n casa para trás
+    # Anda o cursor n casa para trás
     def __backwards_n_pos(self, n):
         for num in range(n):
             self.__cursor = self.__cursor.prev_node
 
-
-
-    #pra testes
+    # pra testes
     @property
     def num_elements(self):
         return self.__num_elements
