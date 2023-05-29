@@ -19,10 +19,11 @@ Acabei descobrindo que o garbage collector do Python age de maneira inusitada, u
 
 No arquivo ***main.py*** tem uma série de testes para demonstrar a lista funcionando. Em comentário está a posição do cursor e a lista completa esperada, logo abaixo, duas funções que **print** que verificam a posição do cursor real e a lista completa real. Quando a lista é printada, é mostrada junto o valor anterior e o próximo valor, para verificar se o encadeamento está correto.
 
-O modelo da lista é:
+O modelo da lista impressa é:
 
 NÓ ANTERIOR / NÓ ATUAL / PRÓXIMO NÓ
 
+Link do repositório no github: https://github.com/JoseMVasconcelos/estrutura_de_dados/tree/master/ListaDuplamenteEncadeada(ComCursor)
 ## Atributos
 
 ### Atributos Node
