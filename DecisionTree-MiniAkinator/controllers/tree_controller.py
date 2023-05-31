@@ -10,10 +10,13 @@ class TreeController():
         self.__tree_dao = TreeDAO()
 
     def include_theme(self):
-        theme_data = self.__tree_view.get_theme()
+        theme_data = self.__tree_view.get_theme(self.get_themes())
 
         tree = DecisionTree(theme_data["theme"])
         tree.__root = Node(theme_data["example"])
 
+        self.__tree_dao.add(tree)
+
     def get_themes(self):
-        pass
+        themes = self.__tree_dao.get_all()
+        self.__tree_view.show_themes(themes)
