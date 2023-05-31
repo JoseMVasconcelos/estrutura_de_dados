@@ -5,3 +5,7 @@ class DecisionTree:
 
     def __insert_node(self, key):
         pass
+
+    @property
+    def theme(self):
+        return self.__theme

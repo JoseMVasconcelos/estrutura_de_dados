@@ -2,7 +2,7 @@ import pickle
 import os
 
 class TreeDAO:
-    def __init__(self):
+    def __init__(self, datasource):
         self.__cache = []
         self.__datasource = os.path.join(os.path.dirname(
             __file__), f'..\\save_data\\{datasource}')
