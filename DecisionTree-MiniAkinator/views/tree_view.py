@@ -19,12 +19,17 @@ class TreeView:
         while True:
             button, values = self.open()
             try:
+                if not values["theme"]:
+                    raise ValueError("Por favor, digite o tema!")
+                if not values["example"]:
+                    raise ValueError("Por favor, digite um exemplo!")
                 if values["theme"] in themes:
-                    raise ValueError
-            except ValueError:
-                sg.popup("Tema ja incluso!")
+                    raise ValueError("Tema já incluso!")
+            except ValueError as err:
+                sg.popup(err)
                 continue
             else:
+                self.close()
                 return {"theme": values["theme"].lower(), "example": values["example"]}
 
 

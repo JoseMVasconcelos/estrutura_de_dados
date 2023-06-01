@@ -1,5 +1,6 @@
 from controllers.tree_controller import TreeController
 from views.game_view import GameView
+import os
 
 class GameController:
     def __init__(self):
@@ -30,11 +31,15 @@ class GameController:
         
 
     def show_tutorial(self):
-        pass
+        self.__game_view.show_tutorial()
 
     def reset_themes(self):
-        pass
-
+        if self.__game_view.reset_warning():
+            path = os.path.join(os.path.dirname(__file__), f'..\\save_data')
+            for file in os.listdir(path):
+                if file == "tree.pkl":
+                    path_to_file = os.path.join(path, file)
+                    os.remove(path_to_file)
     def shutdown(self):
         exit(0)
     

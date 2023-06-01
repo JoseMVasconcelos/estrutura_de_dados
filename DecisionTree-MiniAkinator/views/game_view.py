@@ -26,6 +26,22 @@ class GameView:
                 self.close()
                 return int(key)
 
+    def show_tutorial(self):
+        sg.popup(("Para jogar: Pense em algo baseado no tema escolhido, e eu tentarei advinhar o que fo pensado. Se eu acertar, você pensa em outra coisa, se eu errar, você me diz o que pensou e o que difere isso do meu chute!"))
+
+    def reset_warning(self):
+        layout = [
+            [sg.Text("ATENÇÃO! Você está prestes a apagar todas os temas!")],
+            [sg.Text("Será necessário inserir cada tema e dado manualmente novamente!")],
+            [sg.Button("Confirmar"), sg.Cancel("Cancelar")]
+        ]
+        self.__window = sg.Window("Resetar").Layout(layout)
+        button, values = self.open()
+        if button in (None, "Confirmar"):
+            self.close()
+            return 1
+        self.close()
+        return 0git 
 
     def open(self):
         button, values = self.__window.Read()
