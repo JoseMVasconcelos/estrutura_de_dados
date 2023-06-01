@@ -41,7 +41,7 @@ class GameView:
             self.close()
             return 1
         self.close()
-        return 0git 
+        return 0
 
     def open(self):
         button, values = self.__window.Read()
