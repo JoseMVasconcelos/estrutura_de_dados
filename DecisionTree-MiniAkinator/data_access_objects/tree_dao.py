@@ -29,3 +29,7 @@ class TreeDAO:
 
     def get_all(self):
         return self.__cache
+    
+    def reset(self):
+        self.__cache = []
+        self.__dump()
