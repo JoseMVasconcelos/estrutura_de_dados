@@ -6,26 +6,36 @@ class TableController:
     def __init__(self, header):
         self.__table_view = TableView(self)
         self.__table = DataTable(header)
-        self.__directories = [InvertedIndex("Class"), InvertedIndex("Conservation"), InvertedIndex("Weight")]
+        self.__directories = [InvertedIndex(), InvertedIndex(), InvertedIndex()]
 
 
     def open_view(self):
-        switcher = {
-            1: self.add_data,
-            2: self.delete_data,
-            3: self.search,
-            4: self.show_data,
-            0: self.stop
-        }
+            switcher = {
+                1: self.add_data,
+                2: self.delete_data,
+                3: self.search,
+                4: self.show_data,
+                0: self.stop
+            }
 
-        while True:
-            switcher[int(self.__table_view.show_options())]()
+            while True:
+                try:
+                    switcher[int(self.__table_view.show_options())]()
+                except ValueError:
+                    self.__table_view.show_message("OPÇÃO INVÁLIDA")
+                except KeyError:
+                    self.__table_view.show_message("OPÇÃO INVÁLIDA")
 
     def add_data(self):
         data = self.__table_view.get_data(self.__table.header)
-        self.__table.add_data(data)
-        self.add_to_dir(data)
-
+        if data:
+            if data in self.__table.rows:
+                self.__table_view.show_message("DADO DUPLICADO!")
+            else:
+                self.__table.add_data(data)
+                self.add_to_dir(data)
+        
+            
     def get_id(self, row):
         return self.__table.get_index(row)
 
@@ -45,9 +55,12 @@ class TableController:
             self.__table_view.show_message(err)
 
     def search(self):
-        filters = self.__table_view.get_search_type(self.__directories)
-        filtered_set = self.search_filter(filters)
-        self.__table_view.show_results(filtered_set, self.__table)
+        if self.__directories[0].directory:
+            filters = self.__table_view.get_search_type(self.__directories)
+            filtered_set = self.search_filter(filters)
+            self.__table_view.show_results(filtered_set, self.__table)
+        else:
+            self.__table_view.show_message("NÃO EXISTEM FILTROS!")
 
     def search_filter(self, filters):
         filtered_set = set()

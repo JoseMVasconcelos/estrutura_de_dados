@@ -17,11 +17,17 @@ class TableView:
         print("")
         for col in header:
             data.append(input(f"{col.upper()}: ").upper())
-        return data
+        try:
+            if int(data[3]):
+                return data
+        except ValueError:
+            print("VALOR INVÁLIDO! PESO DEVE SER UM NÚMERO!")
+            return False
     
     def show_table(self, table):
         i = 1
         print("")
+        print("-"*85)
         print("| {:^3}".format("ID") + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*table.header))
         print("-"*85)
         if table.rows and not len(table.vacant_space) == len(table.rows):
@@ -47,6 +53,7 @@ class TableView:
 
     def show_results(self, filtered_set, table):
         print("")
+        print("-"*85)
         print("| {:^3}".format("ID") + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*table.header))
         print("-"*85)
         if filtered_set:

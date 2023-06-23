@@ -1,6 +1,5 @@
 class InvertedIndex:
-    def __init__(self, dir_name):
-        self.__dir_name = dir_name
+    def __init__(self):
         self.__directory = {}
 
     @property
