@@ -25,3 +25,7 @@ class DataTable:
     @property
     def rows(self):
         return self.__rows
+
+    @property
+    def vacant_space(self):
+        return self.__vacant_space

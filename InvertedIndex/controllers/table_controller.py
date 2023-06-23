@@ -26,19 +26,21 @@ class TableController:
         self.__table.add_data(data)
         self.add_to_dir(data)
 
-
-    def get_id(self, data):
-        return self.__table.get_index(data)
+    def get_id(self, row):
+        return self.__table.get_index(row)
 
     def delete_data(self):
         self.show_data()
-        row_id = int(self.__table_view.select_data())-1
         try:
-            if self.__table.rows[row_id]:
-                self.__table.delete_data(row_id)
-                self.del_from_dir(row_id)
+            if self.__table.rows:
+                row_id = int(self.__table_view.select_data())-1
+                if self.__table.rows[row_id]:
+                    self.__table.delete_data(row_id)
+                    self.del_from_dir(row_id)
+                else:
+                    raise IndexError
             else:
-                self.__table_view.show_message("Data not found!")
+                raise IndexError
         except IndexError("Dado não encontrado!") as err:
             self.__table_view.show_message(err)
 

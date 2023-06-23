@@ -24,7 +24,7 @@ class TableView:
         print("")
         print("| {:^3}".format("ID") + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*table.header))
         print("-"*85)
-        if table.rows:
+        if table.rows and not len(table.vacant_space) == len(table.rows):
             for data in table.rows:
                 if data:
                     print("| {:^3}".format(str(i)) + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*data))
