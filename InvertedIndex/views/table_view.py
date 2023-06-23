@@ -16,20 +16,25 @@ class TableView:
         data = []
         print("")
         for col in header:
-            data.append(input(f"{col.upper()}: ".upper()))
+            data.append(input(f"{col.upper()}: ").upper())
         return data
     
     def show_table(self, table):
         i = 1
         print("")
-        print("ID  |  " + "  |  ".join(table.header))
-        for data in table.rows:
-            if data:
-                print(str(i) + "  |  "+  "  |  ".join(data))
-                i += 1
-            else:
-                print(str(i) + "  |  Empty")
-                i += 1
+        print("| {:^3}".format("ID") + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*table.header))
+        print("-"*85)
+        if table.rows:
+            for data in table.rows:
+                if data:
+                    print("| {:^3}".format(str(i)) + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*data))
+                    i += 1
+                else:
+                    print("| {:^3}".format(str(i)) + " | " + "X"*75 + " |")
+                    i += 1
+        else:
+            print("{:^85}".format("TABELA VAZIA!"))
+        print("-"*85)
 
     def get_search_type(self, directories):
         print("")
@@ -42,16 +47,18 @@ class TableView:
 
     def show_results(self, filtered_set, table):
         print("")
-        print("ID  |  " + "  |  ".join(table.header))
+        print("| {:^3}".format("ID") + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*table.header))
+        print("-"*85)
         if filtered_set:
             for row_id in filtered_set:
                 data = table.rows[row_id]
                 if data:
-                    print(str(row_id+1) + "  |  "+  "  |  ".join(data))
+                    print("| {:^3}".format(str(row_id+1)) + " | {:^20} | {:^10} | {:^21} | {:^15} |".format(*data))
                 else:
-                    print(str(row_id+1) + "  |  Empty")
+                    print("| {:^3}".format(str(row_id+1)) + " | " + "X"*75 + " |")
         else:
-            print("TABELA VAZIA!")
+            print("{:^85}".format("TABELA VAZIA!"))
+        print("-"*85)
 
     def select_data(self):
         return input("SELECIONE O ID: ")
